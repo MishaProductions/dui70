@@ -2,7 +2,7 @@
 
 namespace DirectUI
 {
-	class UILIB_API ClassInfoBase //: IClassInfo
+	class UILIB_API ClassInfoBase : public IClassInfo
 	{
 	public:
 		ClassInfoBase(ClassInfoBase const &);
@@ -30,7 +30,7 @@ namespace DirectUI
 		virtual IClassInfo* WINAPI GetBaseClass() = 0;
 
 		//6
-		virtual UCString GetName() const;
+		virtual const wchar_t* GetName() const;
 		//7
 		virtual bool IsValidProperty(const PropertyInfo*) const;
 		//8
@@ -53,11 +53,19 @@ namespace DirectUI
 
 		virtual ~ClassInfoBase() ;
 
-		static bool WINAPI ClassExist(IClassInfo**, const PropertyInfo* const*, unsigned int, IClassInfo*, HINSTANCE, UCString, bool);
-		long Initialize(HINSTANCE, UCString name, bool hasPropertyInfo, const PropertyInfo* const* properties, unsigned int properties_count);
+		static bool WINAPI ClassExist(IClassInfo**, const PropertyInfo* const*, unsigned int, IClassInfo*, HINSTANCE, const wchar_t*, bool);
+		long Initialize(HINSTANCE, const wchar_t* name, bool hasPropertyInfo, const PropertyInfo* const* properties, unsigned int properties_count);
 		long Register();
-	//private:
-		char data[0x10];
+	private:
+		const PropertyInfo* const* m_propertyInfo;
+		unsigned int m_propertyCount;
+		DWORD m_nextClassId;
+		const wchar_t* m_name;
+		HINSTANCE m_hInstance;
+		BOOL m_isGlobal;
+		DWORD m_refCount;
+		DWORD m_childrenCount;
+		DWORD m_unknown;
 	};
 
 
@@ -189,12 +197,12 @@ namespace DirectUI
 		static const PropertyInfo* WINAPI YBarVisibilityProp();
 		static const PropertyInfo* WINAPI YOffsetProp();
 		static const PropertyInfo* WINAPI YScrollableProp();
+		static IClassInfo* s_pClassInfo;
 	
 	protected:
 		void FireAnimationChangeEvent(bool);
 
 	private:
 		void CheckScroll(BaseScrollBar*, int, int, int);
-		static IClassInfo* s_pClassInfo;
 	};
 }

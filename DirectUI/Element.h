@@ -91,7 +91,7 @@ namespace DirectUI
 
 
 		//3
-		virtual UCString GetContentStringAsDisplayed(class Value**);
+		virtual const wchar_t* GetContentStringAsDisplayed(class Value**);
 
 		//4
 		virtual bool OnPropertyChanging(PropertyInfo*, int, class Value*, class Value*);
@@ -163,14 +163,14 @@ namespace DirectUI
 		void FireEvent(struct Event*, bool, bool);
 
 		bool GetAbsorbsShortcut();
-		UCString GetAccDefAction(Value**);
-		UCString GetAccDesc(Value**);
-		UCString GetAccHelp(Value**);
-		UCString GetAccItemStatus(Value**);
-		UCString GetAccItemType(Value**);
-		UCString GetAccName(Value**);
-		UCString GetAccNameAsDisplayed(Value**);
-		UCString GetAccValue(Value**);
+		const wchar_t* GetAccDefAction(Value**);
+		const wchar_t* GetAccDesc(Value**);
+		const wchar_t* GetAccHelp(Value**);
+		const wchar_t* GetAccItemStatus(Value**);
+		const wchar_t* GetAccItemType(Value**);
+		const wchar_t* GetAccName(Value**);
+		const wchar_t* GetAccNameAsDisplayed(Value**);
+		const wchar_t* GetAccValue(Value**);
 
 		int GetAccRole();
 		int GetAccState();
@@ -252,7 +252,7 @@ namespace DirectUI
 		int GetShadowIntensity();
 		StyleSheet* GetSheet();
 		int GetShortcut();
-		UChar GetShortcutChar();
+		wchar_t GetShortcutChar();
 		int GetTextGlowSize();
 		bool GetTooltip();
 		int GetTooltipMaxWidth();
@@ -320,15 +320,15 @@ namespace DirectUI
 		long RemoveLocalValue(const PropertyInfo*);
 
 		long SetAbsorbsShortcut(bool);
-		long SetAccDefAction(UCString);
-		long SetAccDesc(UCString);
-		long SetAccHelp(UCString);
-		long SetAccItemStatus(UCString);
-		long SetAccItemType(UCString);
-		long SetAccName(UCString);
+		long SetAccDefAction(const wchar_t*);
+		long SetAccDesc(const wchar_t*);
+		long SetAccHelp(const wchar_t*);
+		long SetAccItemStatus(const wchar_t*);
+		long SetAccItemType(const wchar_t*);
+		long SetAccName(const wchar_t*);
 		long SetAccRole(int);
 		long SetAccState(int);
-		long SetAccValue(UCString);
+		long SetAccValue(const wchar_t*);
 		long SetAccessible(bool);
 		long SetActive(int);
 		long SetAlpha(int);
@@ -337,27 +337,27 @@ namespace DirectUI
 		long SetBackgroundColor(unsigned long);
 		long SetBackgroundColor(unsigned long, unsigned long, unsigned char);
 		long SetBackgroundColor(unsigned long, unsigned long, unsigned long, unsigned char);
-		long SetBackgroundColor(UCString, int, int);
+		long SetBackgroundColor(const wchar_t*, int, int);
 		long SetBackgroundStdColor(int);
 		long SetBorderColor(unsigned long);
 		long SetBorderGradientColor(unsigned long, unsigned long, unsigned char);
 		long SetBorderStdColor(int);
 		long SetBorderStyle(int);
 		long SetBorderThickness(int, int, int, int);
-		long SetClass(UCString);
+		long SetClass(const wchar_t*);
 		static void WINAPI SetClassInfoPtr(IClassInfo*);
 		long SetCompositedText(bool);
 		long SetContentAlign(int);
-		long SetContentGraphic(UCString, unsigned char, unsigned int);
-		long SetContentGraphic(UCString, unsigned short, unsigned short);
-		long SetContentString(UCString);
-		long SetCursor(UCString);
+		long SetContentGraphic(const wchar_t*, unsigned char, unsigned int);
+		long SetContentGraphic(const wchar_t*, unsigned short, unsigned short);
+		long SetContentString(const wchar_t*);
+		long SetCursor(const wchar_t*);
 		long SetCursorHandle(HICON);
 		long SetDirection(int);
 		long SetEnabled(bool);
-		long SetEncodedContentString(UCString);
-		long SetFont(UCString);
-		long SetFontFace(UCString);
+		long SetEncodedContentString(const wchar_t*);
+		long SetFont(const wchar_t*);
+		long SetFontFace(const wchar_t*);
 		long SetFontQuality(int);
 		long SetFontSize(int);
 		long SetFontStyle(int);
@@ -367,7 +367,7 @@ namespace DirectUI
 		long SetForegroundColor(unsigned long, unsigned long, unsigned long, unsigned char);
 		long SetForegroundStdColor(int);
 		long SetHeight(int);
-		long SetID(UCString);
+		long SetID(const wchar_t*);
 		long SetLayout(class Layout*);
 		long SetLayoutPos(int);
 		long SetMargin(int, int, int, int);
@@ -480,7 +480,7 @@ private:
 		void _SyncRedrawStyle();
 		void _SyncVisible();
 		bool IsPointValid(double, double);
-		unsigned short* RemoveShortcutFromName(UCString);
+		unsigned short* RemoveShortcutFromName(const wchar_t*);
 		bool TryLinePattern(LPPOINT, const RECT&);
 		bool TryPattern(double, double, LPPOINT, const RECT&);
 		bool TrySparsePattern(LPPOINT, const RECT&);
@@ -533,7 +533,7 @@ private:
 		long GetRuntimeId(SAFEARRAY * *);
 		long IsPatternSupported(Schema::Pattern, bool *);
 		long Navigate(NavigateDirection, IRawElementProviderFragment**);
-		long SetString(VARIANT *, UCString (Element::*)(Value * *));
+		long SetString(VARIANT *, const wchar_t* (Element::*)(Value * *));
 		int _UsesUIAProxies(void);
 
 		//2

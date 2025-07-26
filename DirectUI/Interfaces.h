@@ -32,8 +32,8 @@ namespace DirectUI
 		virtual unsigned int GetPICount(void) const = 0;
 		virtual unsigned int GetGlobalIndex(void) const = 0;
 		virtual IClassInfo * GetBaseClass(void) = 0;
-		virtual UCString GetName() const = 0;
-		virtual bool IsValidProperty(struct PropertyInfo const *) const = 0;
+		virtual const wchar_t* GetName() const = 0;
+		virtual bool IsValidProperty(const PropertyInfo *) const = 0;
 		virtual bool IsSubclassOf(IClassInfo *) const = 0;
 		virtual void Destroy(void) = 0;
 		virtual HINSTANCE GetModule(void) const = 0;
@@ -73,7 +73,7 @@ namespace DirectUI
 		virtual ~Proxy(void);
 		Proxy & operator=(Proxy const &);
 
-		static long __stdcall SyncCallback(struct HGADGET__ *, void *, struct EventMsg *);
+		static long __stdcall SyncCallback(HGADGET, void *, EventMsg *);
 
 	protected:
 		void Invoke(unsigned int, void *);
@@ -125,17 +125,38 @@ namespace DirectUI
 		//, public Y
 	{
 	public:
-		PatternProvider();
-		PatternProvider(const PatternProvider&) = delete;
-		PatternProvider& operator=(const PatternProvider&) = delete;
-		virtual ~PatternProvider();
+		PatternProvider()
+		{
+		};
+		PatternProvider(const PatternProvider&)
+		{
+		};
+		PatternProvider& operator=(const PatternProvider&)
+		{
+			// TODO
+			return *this;
+		};
+		virtual ~PatternProvider()
+		{
+		};
 
-		static long WINAPI Create(class ElementProvider*, IUnknown**);
-		virtual void Init(class ElementProvider*);
+		static long WINAPI Create(class ElementProvider*, IUnknown**)
+		{
+			return E_NOTIMPL;
+		};
+		virtual void Init(class ElementProvider*)
+		{
+		};
 		//IProvider
-		virtual ProviderProxyCall GetProxyCreator(void);
+		virtual ProviderProxyCall GetProxyCreator(void)
+		{
+			return NULL;
+		};
 	protected:
-		long DoInvoke(int, ...);
+		long DoInvoke(int, ...)
+		{
+			return E_NOTIMPL;
+		};
 	private:
 
 	};
@@ -188,23 +209,29 @@ namespace DirectUI
 		virtual void T2() = 0;
 	};
 
+	struct Cond;
+	struct Decl;
+	struct DepRecs;
+	class DeferCycle;
+
 	class UILIB_API StyleSheet
 	{
 	public:
 		StyleSheet(StyleSheet const &);
 		StyleSheet(void);
+
 		StyleSheet & operator=(StyleSheet const &);
 
-		static long __stdcall Create(StyleSheet * *);
+		static long __stdcall Create(StyleSheet** result);
 
-		virtual void T1() = 0;
-		virtual void T2() = 0;
-		virtual void T3() = 0;
-		virtual void T4() = 0;
-		virtual void T5() = 0;
-		virtual void T6() = 0;
-		virtual void T7() = 0;
-		virtual void T8() = 0;
+		virtual void Destroy() = 0;
+		virtual HRESULT AddRule(const wchar_t**, IClassInfo*, Cond**, Decl**) = 0;
+		virtual void MakeImmutable() = 0;
+		virtual Value* GetSheetValue(Element*,PropertyInfo const*, DepRecs*, DeferCycle*, long*) = 0;
+		virtual void GetSheetDependencies(Element*, PropertyInfo const*, DepRecs*, DeferCycle*, long*) = 0;
+		virtual void GetSheetScope(Element*, DepRecs*, DeferCycle*, long*) = 0;
+		virtual const wchar_t* GetSheetResid() = 0;
+		virtual HRESULT SetSheetResid(const wchar_t* NewName) = 0;
 	};
 
 }

@@ -40,7 +40,7 @@ namespace DirectUI
 
 		virtual IClassInfo * GetClassInfoW(void);
 		virtual SIZE GetContentSize(int, int, Surface *);
-		virtual unsigned short const * GetContentStringAsDisplayed(Value * *);
+		virtual const wchar_t* GetContentStringAsDisplayed(Value * *);
 		virtual bool IsContentProtected(void);
 		virtual unsigned int MessageCallback(LPGMSG);
 		virtual void OnInput(InputEvent *);

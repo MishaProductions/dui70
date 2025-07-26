@@ -10,7 +10,7 @@ public:
   SafeArrayAccessor &operator=(const SafeArrayAccessor &) = delete;
 
   operator T *();
-  long Access(SAFEARRAY *, UChar);
+  long Access(SAFEARRAY *, wchar_t);
   int Count();
 
 private:

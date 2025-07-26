@@ -39,12 +39,6 @@ struct EventMsg
 //forward declares
 namespace DirectUI
 {
-	typedef unsigned short UChar;
-	typedef UChar* UString;
-	typedef const unsigned short* UCString;
-
-
-
 	typedef class ProviderProxy* (__stdcall * ProviderProxyCall)(class Element *);
 
 

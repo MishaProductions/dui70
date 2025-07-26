@@ -19,7 +19,7 @@ namespace DirectUI
 		long Initialize(Element *, unsigned long *);
 
 		virtual IClassInfo * GetClassInfoW(void);
-		virtual unsigned short const * GetContentStringAsDisplayed(Value * *);
+		virtual const wchar_t* GetContentStringAsDisplayed(Value * *);
 		virtual void OnPropertyChanged(PropertyInfo const *, int, Value *, Value *);
 		virtual bool OnPropertyChanging(PropertyInfo const *, int, Value *, Value *);
 

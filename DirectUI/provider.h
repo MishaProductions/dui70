@@ -19,8 +19,8 @@ namespace DirectUI
 		virtual void DestroyCP();
 
 		static long WINAPI Create(XResourceProvider**pOut);
-		static long WINAPI Create(HINSTANCE, UCString, UCString, UCString, XResourceProvider**pOut );
+		static long WINAPI Create(HINSTANCE, const wchar_t*, const wchar_t*, const wchar_t*, XResourceProvider**pOut );
 		
-		long Initialize(HINSTANCE h, UCString s1, UCString s2, UCString s3);
+		long Initialize(HINSTANCE h, const wchar_t* s1, const wchar_t* s2, const wchar_t* s3);
 	};
 }

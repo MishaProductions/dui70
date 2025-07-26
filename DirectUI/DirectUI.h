@@ -1,20 +1,23 @@
 #pragma once
-#include <Windows.h>
+
+#include <windows.h>
 #include <oleacc.h>
 #include <objbase.h>
 #include <initguid.h>
 #include <oleacc.h>
-#include <Commctrl.h>
-#include <UIAutomationCore.h>
-#include <UIAutomationCoreApi.h>
-#include <DbgHelp.h>
-#include <XmlLite.h>
+#include <commctrl.h>
+#include <uiautomationcore.h>
+#include <uiautomationcoreapi.h>
+#include <dbghelp.h>
+#include <xmllite.h>
 
 #if	defined(DIRECTUI_EXPORTS)
 #define UILIB_API __declspec(dllexport)
 #else
 #define UILIB_API __declspec(dllimport)
 #endif
+#define DUI_VERSION_WIN10_2022 14
+#define DUI_VERSION_WIN7 8
 
 #include "types.h"
 #include "misc.h"
@@ -27,7 +30,7 @@
 
 #include "Primitives.h"
 #include "parser.h"
-#include "element.h"
+#include "Element.h"
 #include "Browser.h"
 #include "Bind.h"
 #include "AnimationStrip.h"
@@ -122,95 +125,93 @@
 #include "TouchButton.h"
 #include "TouchCheckBox.h"
 
+#include "DUIStandardCreator.h"
+
 #include "CClassFactory.h"
 
-//UnknownElement
+using namespace DirectUI;
 
-UILIB_API void WINAPI DumpDuiTree(DirectUI::Element *, int);
-UILIB_API void WINAPI DumpDuiProperties(DirectUI::Element *);
+// tells DirectUI that this ClassInfoBase is present accross all threads
+#define DUI_GLOBAL_CLASS (HINSTANCE)-1
+
+EXTERN_C
+UILIB_API HRESULT WINAPI InitProcessPriv(UINT32 duiVersion, HINSTANCE hModule, BOOLEAN WillRegisterControls, bool bEnableUIAutomationProvider);
+EXTERN_C
+UILIB_API HRESULT WINAPI UnInitProcessPriv(unsigned short*unk1);
+EXTERN_C
+UILIB_API HRESULT WINAPI InitThread(int iDontKnow);
+EXTERN_C
+UILIB_API void WINAPI UnInitThread();
+EXTERN_C
+UILIB_API int WINAPI CreateDUIWrapper(DirectUI::Element*,class XProvider**);
+EXTERN_C
+UILIB_API int WINAPI CreateDUIWrapperEx(DirectUI::Element*, class IXProviderCP*, class XProvider**);
+EXTERN_C
+UILIB_API int WINAPI CreateDUIWrapperFromResource(HINSTANCE,const wchar_t*, const wchar_t*, const wchar_t*, class XResourceProvider**);
+EXTERN_C
+UILIB_API int WINAPI GetScreenDPI();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterAllControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterBaseControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterBrowserControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterCommonControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterExtendedControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterMacroControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterMiscControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterStandardControls();
+EXTERN_C
+UILIB_API HRESULT WINAPI RegisterXControls();
+EXTERN_C
+UILIB_API BOOLEAN WINAPI StartMessagePump();
+EXTERN_C
+UILIB_API VOID WINAPI StopMessagePump();
+
+extern UILIB_API unsigned long g_dwElSlot;
+extern DirectUI::CClassFactory* GlobalCClassFactory;
+
+EXTERN_C ATOM WINAPI StrToID(const wchar_t* resId);
+EXTERN_C HRESULT WINAPI InternalInitProcessPriv(UINT32 duiVersion, HINSTANCE hModule, BOOLEAN WillRegisterControls, bool bEnableUIAutomationProvider);
+EXTERN_C int WINAPI UnicodeToMultiByte(const wchar_t* lpWideCharStr, int cchWideChar, int unk);
+EXTERN_C int WINAPI MultiByteToUnicode(LPCSTR lpMultiByteStr, int cbMultiByte, int unk);
+
+EXTERN_C BOOL WINAPI IsAnimationsEnabled();
+EXTERN_C int WINAPI IsPalette(HWND hWnd);
+EXTERN_C BOOL WINAPI IsUIAutomationProviderEnabled();
+EXTERN_C int WINAPI DUIDrawShadowText(HDC hdcDest, const wchar_t* lpchText, int cchText, LPRECT hdcSrc, UINT format, COLORREF dwTextColor);
+EXTERN_C int WINAPI BlurBitmap(void*, void*, void*, void*, void*);
+EXTERN_C HBRUSH WINAPI BrushFromEnumI(_In_ int Index);
+EXTERN_C DWORD WINAPI ColorFromEnumI(_In_ int Index);
+EXTERN_C LPVOID WINAPI DisableAnimations();
+EXTERN_C int WINAPI DrawShadowTextEx(HDC hdc, const WCHAR* lpchText, int cchText, LPRECT hdcSrc, UINT format, COLORREF dwTextColor, COLORREF dwBkColor, int a9, int a10, COLORREF a11, int a12);
+EXTERN_C void* WINAPI ElementFromGadget(void*);
+EXTERN_C LPVOID WINAPI EnableAnimations();
+EXTERN_C void WINAPI FlushThemeHandles(unsigned int);
+EXTERN_C void WINAPI ForceDebugBreak();
+EXTERN_C DWORD WINAPI GetElementDataEntry(int a1);
+EXTERN_C Macro* WINAPI GetElementMacro(int a1);
+EXTERN_C LPVOID WINAPI GetFontCache();
+EXTERN_C HRESULT WINAPI GetThemeHandle(LPCWSTR, void**);
+EXTERN_C HRESULT WINAPI HrSysAllocString(OLECHAR* psz, BSTR* ppStr);
+EXTERN_C HRESULT WINAPI HStrDup(LPCWSTR lpString, LPCWSTR* ppStr);
+EXTERN_C BOOL WINAPI InitPreprocessor();
+EXTERN_C HRESULT WINAPI SetDefAction(Element* a1, _In_  DWORD dwRole);
+EXTERN_C BOOL WINAPI UiaHideOnGetObject(_In_ HWND hWnd, int a2, int a3);
+EXTERN_C HANDLE WINAPI UiaOnDestroySink(_In_ HWND hWnd);
+EXTERN_C HRESULT WINAPI UiaOnGetObject(void** a1, int a2, InvokeHelper* a3, int a4, int a5);
+EXTERN_C BOOL WINAPI UiaOnToolTip(Element*, DWORD);
+EXTERN_C void WINAPI NotifyAccessibilityEvent(DWORD event, Element*);
+EXTERN_C void* WINAPI PreprocessBuffer(LPCWSTR Src, SIZE_T cSrc, BOOLEAN a3);
+EXTERN_C HGDIOBJ WINAPI ProcessAlphaBitmapI(HBITMAP hgdiobj);
+EXTERN_C void WINAPI PurgeThemeHandles();
 
 namespace DirectUI
 {
-	extern UILIB_API unsigned long g_dwElSlot;
-
-	HRESULT WINAPI InitProcessPriv(int duiVersion, unsigned short*unk1, char unk2, bool bEnableUIAutomationProvider);
-	HRESULT WINAPI UnInitProcessPriv(unsigned short*unk1);
-	EXTERN_C HRESULT WINAPI InitThread(int iDontKnow);
-	void WINAPI UnInitThread();
-
-	int WINAPI CreateDUIWrapper(Element*,class XProvider**);
-	int WINAPI CreateDUIWrapperEx(Element*, class IXProviderCP*, class XProvider**);
-	int WINAPI CreateDUIWrapperFromResource(HINSTANCE,UCString, UCString, UCString, class XResourceProvider**);
-
-	int WINAPI GetScreenDPI();
-
-	int WINAPI RegisterAllControls();
-	int WINAPI RegisterBaseControls();
-	int WINAPI RegisterBrowserControls();
-	int WINAPI RegisterCommonControls();
-	int WINAPI RegisterExtendedControls();
-	int WINAPI RegisterMacroControls();
-	int WINAPI RegisterMiscControls();
-	int WINAPI RegisterStandardControls();
-	int WINAPI RegisterXControls();
-
-	int WINAPI StartMessagePump();
-	int WINAPI StopMessagePump();
-
-
-	ATOM WINAPI StrToID(UCString resId);
-
-
-	int WINAPI UnicodeToMultiByte(UCString lpWideCharStr, int cchWideChar, int unk);
-	int WINAPI MultiByteToUnicode(LPCSTR lpMultiByteStr, int cbMultiByte, int unk);
-
-	BOOL WINAPI IsAnimationsEnabled();
-	int WINAPI IsPalette(HWND hWnd);
-	BOOL WINAPI IsUIAutomationProviderEnabled();
-
-	int WINAPI DUIDrawShadowText(HDC hdcDest, UCString lpchText, int cchText, LPRECT hdcSrc, UINT format, COLORREF dwTextColor);
-
-	int WINAPI BlurBitmap(void*, void*, void*, void*, void*);
-
-	HBRUSH WINAPI BrushFromEnumI(_In_ int Index);
-
-	DWORD WINAPI ColorFromEnumI(_In_ int Index);
-
-	LPVOID WINAPI DisableAnimations();
-	int WINAPI DrawShadowTextEx(HDC hdc, const WCHAR *lpchText, int cchText, LPRECT hdcSrc, UINT format, COLORREF dwTextColor, COLORREF dwBkColor, int a9, int a10, COLORREF a11, int a12);
-	void* WINAPI ElementFromGadget(void*);
-	LPVOID WINAPI EnableAnimations();
-	void WINAPI FlushThemeHandles(unsigned int);
-
-	//此函数仅调用DebugBreak，将程序中断
-	void WINAPI ForceDebugBreak();
-
-	DWORD WINAPI GetElementDataEntry(int a1);
-	Macro* WINAPI GetElementMacro(int a1);
-	LPVOID WINAPI GetFontCache();
-
-	HRESULT WINAPI GetThemeHandle(LPCWSTR, void **);
-
-	//此函数调用SysAllocString，并返回ppStr
-	HRESULT WINAPI HrSysAllocString(OLECHAR *psz, BSTR* ppStr);
-
-	//此函数用于复制lpString字符串，并返回ppStr
-	HRESULT WINAPI HStrDup(LPCWSTR lpString, LPCWSTR* ppStr);
-
-	//此函数是空实现，无任何作用
-	BOOL WINAPI InitPreprocessor();
-
-	HRESULT WINAPI SetDefAction(Element *a1, _In_  DWORD dwRole);
-
-	BOOL WINAPI UiaHideOnGetObject(_In_ HWND hWnd, int a2, int a3);
-
-	//调用RemoveProp 返回举个句柄
-	HANDLE WINAPI UiaOnDestroySink(_In_ HWND hWnd);
-	HRESULT WINAPI UiaOnGetObject(void* *a1, int a2, InvokeHelper *a3, int a4, int a5);
-	BOOL WINAPI UiaOnToolTip(Element *, DWORD);
-
-	void WINAPI NotifyAccessibilityEvent(DWORD event, Element *);
-	void *WINAPI PreprocessBuffer(LPCWSTR Src, SIZE_T cSrc, BOOLEAN a3);
-	HGDIOBJ WINAPI ProcessAlphaBitmapI(HBITMAP hgdiobj);
-	void WINAPI PurgeThemeHandles();
+	void MapRect(Element* elem, RECT* rect1, RECT* rect);
 }

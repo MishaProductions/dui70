@@ -236,9 +236,9 @@ namespace DirectUI
 		static const Schema::PropertyInfo * __ptr32 const g_propertyInfoTable;
 	};
 
-	typedef Value* (WINAPI* GetSheetCallback)(UCString, void*);
-	typedef void ( WINAPI* ParseErrorCallback)(UCString, UCString, int, void*);
-	typedef bool ( WINAPI* UnknownAttrCallback)(UCString, void*);
+	typedef Value* (WINAPI* GetSheetCallback)(const wchar_t*, void*);
+	typedef void ( WINAPI* ParseErrorCallback)(const wchar_t*, const wchar_t*, int, void*);
+	typedef bool ( WINAPI* UnknownAttrCallback)(const wchar_t*, void*);
 
 	namespace ParserTools
 	{
@@ -268,7 +268,7 @@ namespace DirectUI
 		
 		*/
 		static long WINAPI Create(_Inout_ DUIXmlParser** pXmlParser, _In_opt_ GetSheetCallback, _In_opt_ void*sheetParam, _In_opt_ ParseErrorCallback, _In_opt_ void*parseErrorParam);
-		long CreateElement(UCString,class Element*, class Element*, unsigned long*, class Element**out);
+		long CreateElement(const wchar_t*,class Element*, class Element*, unsigned long*, class Element**out);
 		
 		void Destroy();
 		void EnableDesignMode();
@@ -276,26 +276,26 @@ namespace DirectUI
 		HINSTANCE GetHInstance();
 			
 		HINSTANCE GetResourceHInstance();
-		long GetSheet(UCString, Value**);
+		long GetSheet(const wchar_t*, Value**);
 		void* GetSheetContext();
 		
-		long LookupElement(IXmlReader*, UCString, HINSTANCE, struct IClassInfo**);
-		long LookupElement(LINEINFO, UCString, HINSTANCE, struct IClassInfo**);
+		long LookupElement(IXmlReader*, const wchar_t*, HINSTANCE, struct IClassInfo**);
+		long LookupElement(LINEINFO, const wchar_t*, HINSTANCE, struct IClassInfo**);
 
 		void SetDefaultHInstance(HINSTANCE);
 		
 		void SetGetSheetCallback(GetSheetCallback,void*);
 		void SetParseErrorCallback(ParseErrorCallback, void*);
-		void SetUnknownAttrCallback(bool (__stdcall*)(UCString, void*), void*);
+		void SetUnknownAttrCallback(bool (__stdcall*)(const wchar_t*, void*), void*);
 
-		long SetPreprocessedXML(UCString, HINSTANCE, HINSTANCE);
+		long SetPreprocessedXML(const wchar_t*, HINSTANCE, HINSTANCE);
 		void SetUnavailableIcon(HICON);
 
-		HRESULT SetXML(UCString szXML, HINSTANCE hModule, HINSTANCE/*0x10000000 作用未知*/);
+		HRESULT SetXML(const wchar_t* szXML, HINSTANCE hModule, HINSTANCE/*0x10000000 作用未知*/);
 
 		//其资源必须在"UIFILE"类型中
 		HRESULT SetXMLFromResource(UINT uID, HINSTANCE hModule, HINSTANCE/*0x10000000 作用未知*/);
-		HRESULT SetXMLFromResource(UCString szID, HINSTANCE hModule, HINSTANCE/*0x10000000 作用未知*/);
+		HRESULT SetXMLFromResource(const wchar_t* szID, HINSTANCE hModule, HINSTANCE/*0x10000000 作用未知*/);
 
 		long UpdateSheets(Element*);
 		void _DestroyTables();
@@ -321,22 +321,22 @@ namespace DirectUI
 		long _EnterOnCurrentThread();
 		LINEINFO _GetLineInfo(IXmlReader*);
 
-		long AddRulesToStyleSheet(IXmlReader*, StyleSheet*, UCString, DynamicArray<XMLParserCond, 0>*, DynamicArray<UString, 0>*);
+		long AddRulesToStyleSheet(IXmlReader*, StyleSheet*, const wchar_t*, DynamicArray<XMLParserCond, 0>*, DynamicArray<wchar_t*, 0>*);
 		long CreateLayout(const ParserTools::ExprNode*, long (WINAPI*)(int, int*, Value**));
-		long CreateStyleSheet(IXmlReader*, UCString, StyleSheet**);
+		long CreateStyleSheet(IXmlReader*, const wchar_t*, StyleSheet**);
 		long CreateXmlReader(IXmlReader**);
 		long CreateXmlReaderFromHGLOBAL(void*, IXmlReader**);
-		long CreateXmlReaderInputWithEncodingName(IStream*, UCString, IUnknown**);
+		long CreateXmlReaderInputWithEncodingName(IStream*, const wchar_t*, IUnknown**);
 		long GetParserCommon(DUIXmlParser**);
-		long GetPropValPairInfo(IXmlReader*, IClassInfo*, UCString, UCString, PropertyInfo const **, Value**);
-		long GetPropValPairInfo(LINEINFO, IClassInfo*, UCString, UCString, PropertyInfo const **, Value**);
+		long GetPropValPairInfo(IXmlReader*, IClassInfo*, const wchar_t*, const wchar_t*, PropertyInfo const **, Value**);
+		long GetPropValPairInfo(LINEINFO, IClassInfo*, const wchar_t*, const wchar_t*, PropertyInfo const **, Value**);
 		long GetValueParser(ParserTools::ValueParser**);
 		static long WINAPI GetXmlLiteDll(HINSTANCE*);
 		long Initialize();
 		long InitializeParserFromXmlLiteReader(IXmlReader*);
 		static bool WINAPI IsThemeClassName(const ParserTools::ExprNode*);
-		long MapPropertyEnumValue(const struct EnumMap*, UCString, int*);
-		long MapPropertyNameToPropertyInfo(LINEINFO, IClassInfo*, UCString, const PropertyInfo**);
+		long MapPropertyEnumValue(const struct EnumMap*, const wchar_t*, int*);
+		long MapPropertyNameToPropertyInfo(LINEINFO, IClassInfo*, const wchar_t*, const PropertyInfo**);
 		long ParseARGBColor(const ParserTools::ExprNode*, unsigned long*);
 		long ParseArgs(const ParserTools::ExprNode*, ParsedArg*, unsigned int, const char*);
 		long ParseAtomValue(const ParserTools::ExprNode*, Value**);
@@ -345,7 +345,7 @@ namespace DirectUI
 		long ParseDFCFill(const ParserTools::ExprNode*, Value**);
 		long ParseDTBFill(const ParserTools::ExprNode*, Value**);
 		long ParseFillValue(const ParserTools::ExprNode*, Value**);
-		long ParseFunction(UCString, const ParserTools::ExprNode*, ParsedArg*, unsigned int, const char*);
+		long ParseFunction(const wchar_t*, const ParserTools::ExprNode*, ParsedArg*, unsigned int, const char*);
 		long ParseGTCColor(const ParserTools::ExprNode*, unsigned long*);
 		long ParseGTFStr(const ParserTools::ExprNode*, Value**);
 		long ParseGTMarRect(const ParserTools::ExprNode*, LPRECT);
@@ -359,20 +359,20 @@ namespace DirectUI
 		long ParseIntValue(const ParserTools::ExprNode*, Value**);
 		long ParseLayoutValue(const ParserTools::ExprNode*);
 		long ParseLibrary(const ParserTools::ExprNode*, HINSTANCE*);
-		long ParseLiteral(const ParserTools::ExprNode*, UCString*);
-		long ParseLiteralColor(UCString, unsigned long*);
-		long ParseLiteralColorInt(UCString, int*);
-		long ParseLiteralNumber(UCString, int*);
-		long ParseMagnitude(UCString, int*);
+		long ParseLiteral(const ParserTools::ExprNode*, const wchar_t**);
+		long ParseLiteralColor(const wchar_t*, unsigned long*);
+		long ParseLiteralColorInt(const wchar_t*, int*);
+		long ParseLiteralNumber(const wchar_t*, int*);
+		long ParseMagnitude(const wchar_t*, int*);
 		long ParseNumber(const ParserTools::ExprNode*, int*);
 		long ParsePointValue(const ParserTools::ExprNode*, Value**);
-		long ParseQuotedString(const ParserTools::ExprNode*, UCString*);
+		long ParseQuotedString(const ParserTools::ExprNode*, const wchar_t**);
 		long ParseRGBColor(const ParserTools::ExprNode*, unsigned long*);
 		long ParseRect(const ParserTools::ExprNode*, LPRECT);
 		long ParseRectRect(const ParserTools::ExprNode*, LPRECT);
 		long ParseRectValue(const ParserTools::ExprNode*, Value**);
 		long ParseResStr(const ParserTools::ExprNode*, Value**);
-		long ParseResid(const ParserTools::ExprNode*, UCString*);
+		long ParseResid(const ParserTools::ExprNode*, const wchar_t**);
 		long ParseSGraphicGraphic(const ParserTools::ExprNode*, Value**);
 		long ParseSGraphicHelper(bool,const ParserTools::ExprNode*, Value**);
 		long ParseSizeValue(const ParserTools::ExprNode*, Value**);
@@ -382,19 +382,19 @@ namespace DirectUI
 		long ParseSysMetricStr(const ParserTools::ExprNode*, Value**);
 		long ParseTheme(const ParserTools::ExprNode*, void**);
 		static int WINAPI QuerySysMetric(int);
-		static UCString WINAPI QuerySysMetricStr(int, UString, unsigned int);
+		static const wchar_t* WINAPI QuerySysMetricStr(int, wchar_t*, unsigned int);
 		void ReturnValueParser(ParserTools::ValueParser*);
-		void SendParseError(UCString, UCString, int, int, long);
-		void SendParseError(UCString, UCString, IXmlReader*, long);
+		void SendParseError(const wchar_t*, const wchar_t*, int, int, long);
+		void SendParseError(const wchar_t*, const wchar_t*, IXmlReader*, long);
 		void _LeaveOnCurrentThread();
 
-		long _RecordElementLayout(IXmlReader*, UCString);
-		long _RecordElementStyleSheet(UCString, bool);
+		long _RecordElementLayout(IXmlReader*, const wchar_t*);
+		long _RecordElementStyleSheet(const wchar_t*, bool);
 		long _RecordElementTrees(IXmlReader*);
-		long _RecordElementWithChildren(IXmlReader*, bool, UString*);
-		long _RecordInstantiateElement(IXmlReader*, UString*);
+		long _RecordElementWithChildren(IXmlReader*, bool, wchar_t**);
+		long _RecordInstantiateElement(IXmlReader*, wchar_t**);
 		long _RecordSetElementProperties(IXmlReader*);
-		long _RecordSetValue(IXmlReader*, UCString, UCString);
+		long _RecordSetValue(IXmlReader*, const wchar_t*, const wchar_t*);
 
 		static FunctionDefinition<unsigned long> const* __ptr32 const s_fdClr;
 		static FunctionDefinition<Value*> const* __ptr32 const s_fdFill;
@@ -416,13 +416,13 @@ namespace DirectUI
 		long CreateParser(void);
 		DUIXmlParser * DetachParser(void);
 		DUIXmlParser * GetParser(void);
-		long LoadFromBuffer(UCString, UINT_PTR, UCString, Element *, unsigned long *, Element * *);
-		long LoadFromFile(UCString, UCString, Element *, unsigned long *, Element * *);
-		long LoadFromResource(HINSTANCE, UCString, UCString, Element *, unsigned long *, Element * *, UCString);
-		void __cdecl SetError(UCString, ...);
+		long LoadFromBuffer(const wchar_t*, UINT_PTR, const wchar_t*, Element *, unsigned long *, Element * *);
+		long LoadFromFile(const wchar_t*, const wchar_t*, Element *, unsigned long *, Element * *);
+		long LoadFromResource(HINSTANCE, const wchar_t*, const wchar_t*, Element *, unsigned long *, Element * *, const wchar_t*);
+		void __cdecl SetError(const wchar_t*, ...);
 
 	private:
-		static void __stdcall s_XMLParseError(UCString, UCString, int, void *);
+		static void __stdcall s_XMLParseError(const wchar_t*, const wchar_t*, int, void *);
 		void ClearParser(void);
 	};
 
